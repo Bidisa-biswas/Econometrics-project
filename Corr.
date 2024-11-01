@@ -1,0 +1,14 @@
+Consider a real-world scenario to make this intuitive:
+
+Suppose we’re studying the salary (y) of individuals based on:
+
+education level (x), a continuous variable.
+industry (z), a one-hot encoded vector representing the industry (e.g., tech, finance, healthcare).
+In this model:
+
+𝑔(x)
+g(x) captures the non-linear relationship between education level and salary.
+𝑧𝛽
+zβ captures the linear relationship between industry and salary
+
+Idea: To understand the relationship between salary and education, salary and industry, and their respective correlation to check the partial linear relation in the regression
