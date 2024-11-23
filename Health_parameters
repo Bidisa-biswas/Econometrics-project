@@ -1,0 +1,70 @@
+
+
+import numpy as np
+import  pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.model_selection import train_test_split
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import classification_report
+from scipy.stats import norm
+
+
+df = pd.read.csv('/Users/bidisabiswas/Library/Mobile Documents/com~apple~CloudDocs/Master course/Econometrics 1/Dataset/FoodData_Central_foundation_food_csv_2024-10-31/food.csv')
+
+#data processing by cleaning and manuoulating the dataset to make it ready for analysis
+df['publication_date']=pd.to_datetime(df['publication_date'])
+df.dropna(subset=['food_category_id', 'description'], inplace=True) #drop rows with missing values in these columns
+
+#split the dataset intotraining data and test data. Interestingly, you have a set of the data set and from there you are dividing into the train set and the test set to check the analysis of the data
+
+X =df['description']
+Y = df['food category_id']
+X_train, X_test,Y_Train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=42)
+
+#convert the text data into numerical data using the TfidfVectorizer: this is common way of transfering the document data in words that can be use for analysis for the Natural language model
+vectorizer = TfidfVectorizer()
+X_train = vectorizer.fit_transform(X_train) # Here the fit_transform method is used to convert the text data into numerical data set for the training data
+X_test = vectorizer.transform(X_test) # Here the transform method is used to convert the text data into numerical data set for the test data. As these are the description of the food items and not in any of the numerical data form. Therefore the words that you have used will have the numerical set up for the analysis
+
+#Train the model using the RandomForestClassifier
+model = RandomForestClassifier() # Here the RandomForestClassifier is used to train the model and how? The model is trained using the training data set that you have created above. The model is trained to predict the food category id based on the description of the food items.
+model.fit(X_train, Y_train)
+
+#Evaluate the model using the test data set
+y_pred = model.prediction(X_test)# Here the model is used to predict the food category id based on the description of the food items in the test data set
+print(classification_report(Y_test. y_pred)) # Here the classification_report is used to evaluate the model. The classification_report is used to evaluate the model based on the test data set and the predicted data set. The classification_report is used to evaluate the model based on the precision, recall, f1-score and support. The classification_report is used to evaluate the model based on the test data set and the predicted data set. The classification_report is used to evaluate the model based on the precision, recall, f1-score and support. The classification_report is used to evaluate the model based on the test data set and the predicted data set. The classification_report is used to evaluate the model based on the precision, recall, f1-score and support. The classification_report is used to evaluate the model based on the test data set and the predicted data set. The classification_report is
+
+#CLT example to calculate the probability of the mean of the sample data which will converge to the population mean or normally distributed
+# Set the sample size
+n = 1000
+sample_means = [df['food_category_id'].sample(100, replace = True).mean()for _ in range(1000)]
+sns.histplot(sample_means,kde = True)
+plt.title('Distribution of the sample mean')
+plt.xlabel('Sample mean')
+plt.ylabel('Frequency')
+plt.show()
+
+
+#WLLN example to calculate the probability of the sample mean which will converge to the population mean
+# Set the sample size
+n= 1000
+sample_means = [df['Food category_id'].sample(100, replace = True).mean() for _ in range (1000)]
+sns.histplot(sample_means , Kde = True)
+plt.title('Converges of sample mean to the population mean')
+plt.xlabel('Sample mean')
+plt.ylabel('Frequency')
+plt.show()
+
+#using the Delta method to calculate the variance of the sample mean which will converge to the population variance
+mean = df['food category_id'].mean() #to calculate the mean of the data frame of the food category_id
+variance = df['food category_id'].var() #to calculate the variance of the data frame of the food category_id
+n = 1000 #set the sample size
+sample_mean_variance = variance/n #to calculate the variance of the sample mean
+delta_method_variance = (variance/n)**2 #to calculate the variance of the sample mean using the Delta method
+print('Sample mean variance:', sample_mean_variance)
+print('Delta method variance:', delta_method_variance)
+
+print (f'Delta method variance: {delta_method_variance}')
+print (f'Sample mean variance: {sample_mean_variance}')
